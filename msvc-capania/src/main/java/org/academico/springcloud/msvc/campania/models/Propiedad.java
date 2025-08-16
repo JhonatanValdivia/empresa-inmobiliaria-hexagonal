@@ -1,6 +1,7 @@
 package org.academico.springcloud.msvc.campania.models;
 
-//POJO
+import java.math.BigDecimal;
+
 public class Propiedad {
     private Long idPropiedad;
     private String tipoPropiedad;
@@ -32,4 +33,64 @@ public class Propiedad {
     public void setUbicacion(Ubicacion ubicacion) { this.ubicacion = ubicacion; }
     public Zonificacion getZonificacion() { return zonificacion; }
     public void setZonificacion(Zonificacion zonificacion) { this.zonificacion = zonificacion; }
+
+    // Value objects as static inner classes
+    public static class Precio {
+        private BigDecimal monto;
+        private String moneda;
+
+        public Precio() {}
+
+        public Precio(BigDecimal monto, String moneda) {
+            this.monto = monto;
+            this.moneda = moneda;
+        }
+
+        public BigDecimal getMonto() { return monto; }
+        public void setMonto(BigDecimal monto) { this.monto = monto; }
+        public String getMoneda() { return moneda; }
+        public void setMoneda(String moneda) { this.moneda = moneda; }
+    }
+
+    public static class Ubicacion {
+        private String ubigeo;
+        private String ciudad;
+        private String direccion;
+
+        public Ubicacion() {}
+
+        public Ubicacion(String ubigeo, String ciudad, String direccion) {
+            this.ubigeo = ubigeo;
+            this.ciudad = ciudad;
+            this.direccion = direccion;
+        }
+
+        public String getUbigeo() { return ubigeo; }
+        public void setUbigeo(String ubigeo) { this.ubigeo = ubigeo; }
+        public String getCiudad() { return ciudad; }
+        public void setCiudad(String ciudad) { this.ciudad = ciudad; }
+        public String getDireccion() { return direccion; }
+        public void setDireccion(String direccion) { this.direccion = direccion; }
+    }
+
+    public static class Zonificacion {
+        private String tipoZona;
+        private String descripcionNormativa;
+        private String usoPermitido;
+
+        public Zonificacion() {}
+
+        public Zonificacion(String tipoZona, String descripcionNormativa, String usoPermitido) {
+            this.tipoZona = tipoZona;
+            this.descripcionNormativa = descripcionNormativa;
+            this.usoPermitido = usoPermitido;
+        }
+
+        public String getTipoZona() { return tipoZona; }
+        public void setTipoZona(String tipoZona) { this.tipoZona = tipoZona; }
+        public String getDescripcionNormativa() { return descripcionNormativa; }
+        public void setDescripcionNormativa(String descripcionNormativa) { this.descripcionNormativa = descripcionNormativa; }
+        public String getUsoPermitido() { return usoPermitido; }
+        public void setUsoPermitido(String usoPermitido) { this.usoPermitido = usoPermitido; }
+    }
 }
