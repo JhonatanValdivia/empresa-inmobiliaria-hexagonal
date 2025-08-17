@@ -10,7 +10,6 @@ import org.academico.springcloud.msvc.preventa.models.entity.PropuestaPago;
 import org.academico.springcloud.msvc.preventa.models.entity.VisitaProgramada;
 import org.academico.springcloud.msvc.preventa.models.enums.EstadoVisita;
 import org.academico.springcloud.msvc.preventa.repositories.PreventaRepository;
-import org.academico.springcloud.msvc.preventa.models.enums.enumsPropiedades.EstadoPropiedad;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -50,7 +49,7 @@ public class PreventaServiceImpl implements PreventaService {
         if (propiedad == null) {
             throw new IllegalArgumentException("Propiedad no encontrada con ID: " + idPropiedad);
         }
-        if (propiedad.getEstado() == null || !propiedad.getEstado().equals(EstadoPropiedad.DISPONIBLE)) {
+        if (propiedad.getEstado() == null || !propiedad.getEstado().equals(PropiedadInmobiliaria.EstadoPropiedad.DISPONIBLE)) {
             throw new IllegalArgumentException("La propiedad con ID " + idPropiedad + " no está disponible");
         }
 
