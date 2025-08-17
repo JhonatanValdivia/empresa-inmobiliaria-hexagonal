@@ -18,7 +18,7 @@ public class PropiedadInmobiliariaMapper {
 
         PropiedadInmobiliariaEntity e = new PropiedadInmobiliariaEntity();
 
-        //  Solo setear el id si viene no nulo (caso update)
+
         if (d.getIdPropiedad() != null) {
             e.setIdPropiedad(d.getIdPropiedad());
         }
@@ -28,6 +28,9 @@ public class PropiedadInmobiliariaMapper {
         e.setPrecio(ValueObjectMappers.toEntity(d.getPrecio()));
         e.setUbicacion(ValueObjectMappers.toEntity(d.getUbicacion()));
         e.setZonificacion(ValueObjectMappers.toEntity(d.getZonificacion()));
+        e.setUsuarioId(d.getUsuarioId());
+
+
 
         // Documentos legales
         if (d.getDocumentosLegales() != null) {
@@ -66,6 +69,7 @@ public class PropiedadInmobiliariaMapper {
         d.setPrecio(ValueObjectMappers.toDomain(e.getPrecio()));
         d.setUbicacion(ValueObjectMappers.toDomain(e.getUbicacion()));
         d.setZonificacion(ValueObjectMappers.toDomain(e.getZonificacion()));
+        d.setUsuarioId(e.getUsuarioId());
 
         // Documentos legales
         if (e.getDocumentosLegales() != null) {
