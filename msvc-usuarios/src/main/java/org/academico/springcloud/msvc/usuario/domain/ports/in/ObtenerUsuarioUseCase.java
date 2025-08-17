@@ -1,6 +1,6 @@
 package org.academico.springcloud.msvc.usuario.domain.ports.in;
 
-import org.academico.springcloud.msvc.usuario.domain.model.Usuario;
+import org.academico.springcloud.msvc.usuario.domain.models.entities.Usuario;
 
 import java.util.List;
 import java.util.Optional;

@@ -3,7 +3,7 @@ package org.academico.springcloud.msvc.usuario.infrastructure.config;
 import org.academico.springcloud.msvc.usuario.application.usecases.*;
 import org.academico.springcloud.msvc.usuario.domain.ports.in.*;
 import org.academico.springcloud.msvc.usuario.domain.ports.out.UsuarioRepositoryPort;
-import org.academico.springcloud.msvc.usuario.infrastructure.adapters.persistence.JpaUsuarioRepositoryAdapter;
+import org.academico.springcloud.msvc.usuario.infrastructure.adapters.JpaUsuarioRepositoryAdapter;
 import org.academico.springcloud.msvc.usuario.infrastructure.mappers.UsuarioMapper;
 import org.academico.springcloud.msvc.usuario.infrastructure.repositories.JpaUsuarioRepository;
 import org.springframework.context.annotation.Bean;

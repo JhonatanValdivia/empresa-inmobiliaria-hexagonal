@@ -1,8 +1,8 @@
 package org.academico.springcloud.msvc.usuario.infrastructure.controllers;
 
 import jakarta.validation.Valid;
-import org.academico.springcloud.msvc.usuario.domain.model.Usuario;
-import org.academico.springcloud.msvc.usuario.domain.enums.TipoUsuario;
+import org.academico.springcloud.msvc.usuario.domain.models.entities.Usuario;
+import org.academico.springcloud.msvc.usuario.domain.models.enums.TipoUsuario;
 import org.academico.springcloud.msvc.usuario.domain.ports.in.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -31,8 +31,8 @@ public class UsuarioController {
     private ObtenerUsuariosPorTipoUseCase obtenerUsuariosPorTipoUseCase;
 
     @GetMapping
-    public List<Usuario> listar() {
-        return obtenerUsuarioUseCase.obtenerTodos();
+    public ResponseEntity<List<Usuario>> listar() {
+        return ResponseEntity.ok(obtenerUsuarioUseCase.obtenerTodos());
     }
 
     @GetMapping("/{id}")
@@ -88,4 +88,19 @@ public class UsuarioController {
         List<Usuario> usuarios = obtenerUsuariosPorTipoUseCase.obtenerPorTipo(tipoUsuario);
         return ResponseEntity.ok(usuarios);
     }
+
+    @RestControllerAdvice
+    public class GlobalExceptionHandler {
+        @ExceptionHandler(IllegalArgumentException.class)
+        public ResponseEntity<?> handleIllegalArgument(IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+
+        @ExceptionHandler(Exception.class)
+        public ResponseEntity<?> handleGenericException(Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error inesperado: " + e.getMessage());
+        }
+    }
+
+
 }

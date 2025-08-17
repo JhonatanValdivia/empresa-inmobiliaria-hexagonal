@@ -1,8 +1,8 @@
 package org.academico.springcloud.msvc.campania.infrastructure.adapters;
 
-import org.academico.springcloud.msvc.campania.domain.model.Campania;
+import org.academico.springcloud.msvc.campania.domain.models.entities.Campania;
 import org.academico.springcloud.msvc.campania.domain.ports.out.CampaniaRepositoryPort;
-import org.academico.springcloud.msvc.campania.infrastructure.entities.CampaniaEntity;
+import org.academico.springcloud.msvc.campania.infrastructure.models.entities.CampaniaEntity;
 import org.academico.springcloud.msvc.campania.infrastructure.mappers.CampaniaMapper;
 import org.academico.springcloud.msvc.campania.infrastructure.repositories.JpaCampaniaRepository;
 import org.springframework.context.annotation.Primary;

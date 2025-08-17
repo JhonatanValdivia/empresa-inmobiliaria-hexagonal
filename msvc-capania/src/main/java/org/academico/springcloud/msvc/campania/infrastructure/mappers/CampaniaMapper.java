@@ -1,12 +1,11 @@
 package org.academico.springcloud.msvc.campania.infrastructure.mappers;
 
-import org.academico.springcloud.msvc.campania.domain.model.Campania;
-import org.academico.springcloud.msvc.campania.domain.model.ProveedorPublicidad;
-import org.academico.springcloud.msvc.campania.infrastructure.entities.CampaniaEntity;
-import org.academico.springcloud.msvc.campania.infrastructure.entities.ProveedorPublicidadEntity;
+import org.academico.springcloud.msvc.campania.domain.models.entities.Campania;
+import org.academico.springcloud.msvc.campania.domain.models.entities.ProveedorPublicidad;
+import org.academico.springcloud.msvc.campania.infrastructure.models.entities.CampaniaEntity;
+import org.academico.springcloud.msvc.campania.infrastructure.models.entities.ProveedorPublicidadEntity;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
@@ -51,18 +50,20 @@ public class CampaniaMapper {
         return entity;
     }
 
-    // ---- Conversión Proveedores ----
+    // ---- Conversión de entidad JPA a VO de dominio ----
     private ProveedorPublicidad toDomainProveedor(ProveedorPublicidadEntity entity) {
         if (entity == null) return null;
-        ProveedorPublicidad proveedor = new ProveedorPublicidad();
-        proveedor.setIdProveedor(entity.getIdProveedor());
-        proveedor.setNombre(entity.getNombre());
-        proveedor.setCuentaPublicitaria(entity.getCuentaPublicitaria());
-        return proveedor;
+        return new ProveedorPublicidad(
+                entity.getIdProveedor(),
+                entity.getNombre(),
+                entity.getCuentaPublicitaria()
+        );
     }
 
+    // ---- Conversión de VO de dominio a entidad JPA ----
     private ProveedorPublicidadEntity toEntityProveedor(ProveedorPublicidad proveedor) {
         if (proveedor == null) return null;
+        // Aquí se crea una nueva entidad usando constructor o setters
         ProveedorPublicidadEntity entity = new ProveedorPublicidadEntity();
         entity.setIdProveedor(proveedor.getIdProveedor());
         entity.setNombre(proveedor.getNombre());
@@ -70,3 +71,4 @@ public class CampaniaMapper {
         return entity;
     }
 }
+

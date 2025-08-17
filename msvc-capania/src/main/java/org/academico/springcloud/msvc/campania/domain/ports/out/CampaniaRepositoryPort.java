@@ -1,6 +1,6 @@
 package org.academico.springcloud.msvc.campania.domain.ports.out;
 
-import org.academico.springcloud.msvc.campania.domain.model.Campania;
+import org.academico.springcloud.msvc.campania.domain.models.entities.Campania;
 
 import java.util.List;
 import java.util.Optional;

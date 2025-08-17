@@ -8,48 +8,39 @@ import org.academico.springcloud.msvc.campania.infrastructure.adapters.external.
 import org.academico.springcloud.msvc.campania.infrastructure.clients.PropiedadClientRest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
 
 @Configuration
 public class ApplicationConfig {
 
     @Bean
-    public CreateCampaniaUseCase createCampaniaUseCase(
+    public CrearCampaniaUseCase createCampaniaUseCase(
             CampaniaRepositoryPort repositoryPort,
             PropiedadExternalServicePort externalPort) { // <-- inyecta la interfaz
-        return new CreateCampaniaUseCaseImpl(repositoryPort, externalPort);
+        return new CrearCampaniaUseCaselmpl(repositoryPort, externalPort);
     }
 
     @Bean
-    public RetrieveCampaniaUseCase retrieveCampaniaUseCase(CampaniaRepositoryPort repositoryPort) {
-        return new RetrieveCampaniaUseCaseImpl(repositoryPort);
+    public ActualizarCampaniaUseCase updateCampaniaUseCase(CampaniaRepositoryPort repositoryPort) {
+        return new ActualizarCampaniaUseCaseImpl(repositoryPort);
     }
 
     @Bean
-    public UpdateCampaniaUseCase updateCampaniaUseCase(CampaniaRepositoryPort repositoryPort) {
-        return new UpdateCampaniaUseCaseImpl(repositoryPort);
+    public EliminarCampaniaUseCase deleteCampaniaUseCase(CampaniaRepositoryPort repositoryPort) {
+        return new EliminarCampaniaUseCaseImpl(repositoryPort);
     }
 
     @Bean
-    public DeleteCampaniaUseCase deleteCampaniaUseCase(CampaniaRepositoryPort repositoryPort) {
-        return new DeleteCampaniaUseCaseImpl(repositoryPort);
+    public AprobarMontoUseCase approveMontoUseCase(CampaniaRepositoryPort repositoryPort) {
+        return new AprobarMontoUseCaselmpl(repositoryPort);
     }
 
     @Bean
-    public ApproveMontoUseCase approveMontoUseCase(CampaniaRepositoryPort repositoryPort) {
-        return new ApproveMontoUseCaseImpl(repositoryPort);
-    }
-
-    @Bean
-    public ManageProveedorUseCase manageProveedorUseCase(CampaniaRepositoryPort repositoryPort) {
-        return new ManageProveedorUseCaseImpl(repositoryPort);
+    public GestionarProveedorUseCase manageProveedorUseCase(CampaniaRepositoryPort repositoryPort) {
+        return new GestionarProveedorUseCaseImpl(repositoryPort);
     }
 
     @Bean
     public PropiedadExternalServicePort propiedadExternalServicePort(PropiedadClientRest clientRest) {
         return new PropiedadExternalServiceAdapter(clientRest);
     }
-
-
-
 }

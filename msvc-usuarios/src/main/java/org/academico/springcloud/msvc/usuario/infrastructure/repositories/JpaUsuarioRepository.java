@@ -1,7 +1,7 @@
 package org.academico.springcloud.msvc.usuario.infrastructure.repositories;
 
-import org.academico.springcloud.msvc.usuario.domain.enums.TipoUsuario;
-import org.academico.springcloud.msvc.usuario.infrastructure.entities.UsuarioEntity;
+import org.academico.springcloud.msvc.usuario.domain.models.enums.TipoUsuario;
+import org.academico.springcloud.msvc.usuario.infrastructure.models.entities.UsuarioEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

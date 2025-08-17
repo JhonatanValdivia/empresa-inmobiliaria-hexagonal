@@ -1,6 +1,6 @@
 package org.academico.springcloud.msvc.usuario.application.usecases;
 
-import org.academico.springcloud.msvc.usuario.domain.model.Usuario;
+import org.academico.springcloud.msvc.usuario.domain.models.entities.Usuario;
 import org.academico.springcloud.msvc.usuario.domain.ports.in.ActualizarUsuarioUseCase;
 import org.academico.springcloud.msvc.usuario.domain.ports.out.UsuarioRepositoryPort;
 import org.springframework.stereotype.Service;
