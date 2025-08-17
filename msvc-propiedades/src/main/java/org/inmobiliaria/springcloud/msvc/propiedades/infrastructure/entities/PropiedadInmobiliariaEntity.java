@@ -12,7 +12,7 @@ import org.inmobiliaria.springcloud.msvc.propiedades.infrastructure.entities.inf
 import java.util.ArrayList;
 import java.util.List;
 @Entity
-@Table
+@Table(name = "propiedades_inmobiliarias")
 public class PropiedadInmobiliariaEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
