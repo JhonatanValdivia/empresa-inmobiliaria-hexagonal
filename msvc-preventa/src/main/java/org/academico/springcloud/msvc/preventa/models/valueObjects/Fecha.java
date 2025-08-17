@@ -10,9 +10,9 @@ import java.util.Objects;
 
 @Embeddable
 public class Fecha {
-    private Integer dia;
-    private Integer mes;
-    private Integer anio;
+    private int dia;
+    private int mes;
+    private int anio;
 
     protected Fecha() {
     }
@@ -55,7 +55,7 @@ public class Fecha {
         return mes;
     }
 
-    public int getAño() {
+    public int getAnio() {
         return anio;
     }
 
