@@ -1,0 +1,75 @@
+package org.inmobiliaria.springcloud.msvc.propiedades.domain.models.domainentities;
+
+
+import org.inmobiliaria.springcloud.msvc.propiedades.domain.models.enums.EstadoDocumentoLegal;
+import org.inmobiliaria.springcloud.msvc.propiedades.domain.models.enums.TipoDocumentoLegal;
+
+public class DocumentoLegal {
+    private Long idDocumentoLegal;
+    private TipoDocumentoLegal tipoDocumento;
+    private String nombreNotaria;
+    private String numeroInscripcionSunarp;
+    private EstadoDocumentoLegal estadoDocumento;
+    private PropiedadInmobiliaria propiedad;
+
+    public DocumentoLegal(){
+
+    }
+
+    public DocumentoLegal(Long idDocumentoLegal, TipoDocumentoLegal tipoDocumento, String nombreNotaria, String numeroInscripcionSunarp, EstadoDocumentoLegal estadoDocumento, PropiedadInmobiliaria propiedad) {
+        this.idDocumentoLegal = idDocumentoLegal;
+        this.tipoDocumento = tipoDocumento;
+        this.nombreNotaria = nombreNotaria;
+        this.numeroInscripcionSunarp = numeroInscripcionSunarp;
+        this.estadoDocumento = estadoDocumento;
+        this.propiedad = propiedad;
+    }
+
+    public Long getIdDocumentoLegal() {
+        return idDocumentoLegal;
+    }
+
+    public void setIdDocumentoLegal(Long idDocumentoLegal) {
+        this.idDocumentoLegal = idDocumentoLegal;
+    }
+
+    public TipoDocumentoLegal getTipoDocumento() {
+        return tipoDocumento;
+    }
+
+    public void setTipoDocumento(TipoDocumentoLegal tipoDocumento) {
+        this.tipoDocumento = tipoDocumento;
+    }
+
+    public String getNombreNotaria() {
+        return nombreNotaria;
+    }
+
+    public void setNombreNotaria(String nombreNotaria) {
+        this.nombreNotaria = nombreNotaria;
+    }
+
+    public String getNumeroInscripcionSunarp() {
+        return numeroInscripcionSunarp;
+    }
+
+    public void setNumeroInscripcionSunarp(String numeroInscripcionSunarp) {
+        this.numeroInscripcionSunarp = numeroInscripcionSunarp;
+    }
+
+    public EstadoDocumentoLegal getEstadoDocumento() {
+        return estadoDocumento;
+    }
+
+    public void setEstadoDocumento(EstadoDocumentoLegal estadoDocumento) {
+        this.estadoDocumento = estadoDocumento;
+    }
+
+    public PropiedadInmobiliaria getPropiedad() {
+        return propiedad;
+    }
+
+    public void setPropiedad(PropiedadInmobiliaria propiedad) {
+        this.propiedad = propiedad;
+    }
+}
