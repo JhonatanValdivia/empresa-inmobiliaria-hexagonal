@@ -7,26 +7,24 @@ import org.academico.springcloud.msvc.usuario.domain.models.valueObjects.NombreC
 import org.academico.springcloud.msvc.usuario.domain.models.valueObjects.Telefono;
 import org.academico.springcloud.msvc.usuario.domain.models.enums.TipoUsuario;
 
-@Entity
-@Table(name = "usuarios")
+
 public class Usuario {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     private Long id;
 
-    @Embedded
+
     private NombreCompleto nombreCompleto;
 
-    @Enumerated(EnumType.STRING)
+
     private TipoUsuario tipoUsuario;
 
-    @Embedded
+
     private Telefono telefono;
 
-    @Embedded
+
     private CorreoElectronico correoElectronico;
 
-    @Embedded
+
     private Direccion direccion;
 
     // Getters y Setters
