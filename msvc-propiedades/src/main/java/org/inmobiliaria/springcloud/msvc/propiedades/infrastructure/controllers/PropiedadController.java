@@ -2,10 +2,13 @@ package org.inmobiliaria.springcloud.msvc.propiedades.infrastructure.controllers
 
 import org.inmobiliaria.springcloud.msvc.propiedades.application.services.PropiedadService;
 import org.inmobiliaria.springcloud.msvc.propiedades.domain.models.domainentities.PropiedadInmobiliaria;
+import org.inmobiliaria.springcloud.msvc.propiedades.domain.models.domainentities.UsuarioDetails;
+import org.inmobiliaria.springcloud.msvc.propiedades.infrastructure.adapters.pojos.Usuario;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.net.URI;
 import java.util.List;
@@ -59,6 +62,34 @@ public class PropiedadController {
         service.deletePropiedad(id);
         return ResponseEntity.noContent().build();
     }
+
+    @PutMapping("/{propiedadId}/asignar-usuario/{usuarioId}")
+    public ResponseEntity<Void> asignar(@PathVariable Long propiedadId, @PathVariable Long usuarioId) {
+        service.asignarUsuario(propiedadId, usuarioId);
+        return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping("/{propiedadId}/eliminar-usuario")
+    public ResponseEntity<Void> quitar(@PathVariable Long propiedadId) {
+        service.eliminarUsuario(propiedadId);
+        return ResponseEntity.noContent().build();
+    }
+    //para mostraar el detalle de usuario
+    @GetMapping("/{propiedadId}/usuario-detalle")
+    public ResponseEntity<UsuarioDetails> getUsuario(@PathVariable Long propiedadId) {
+        var propiedad = service.getPropiedad(propiedadId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Propiedad no existe"));
+
+        if (propiedad.getUsuarioId() == null) {
+            return ResponseEntity.noContent().build(); // la propiedad no tiene usuario asignado
+        }
+
+        return service.getUsuarioDetails(propiedad.getUsuarioId())
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+
 
 
 }

@@ -7,12 +7,11 @@
 		<artifactId>empresa-inmobiliaria-hexagonal</artifactId>
 		<version>1.0-SNAPSHOT</version>
 	</parent>
-
 	<groupId>org.academico.springcloud.msvc.venta</groupId>
 	<artifactId>msvc-venta</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>msvc-venta</name>
-	<description>Agreagado gestión de venta de propiedades inmobiliarias</description>
+	<description>Gestion de cobros</description>
 	<url/>
 	<licenses>
 		<license/>

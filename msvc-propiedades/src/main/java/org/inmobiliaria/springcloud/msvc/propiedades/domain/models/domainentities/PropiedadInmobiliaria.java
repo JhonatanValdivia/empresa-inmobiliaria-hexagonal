@@ -19,10 +19,34 @@ public class PropiedadInmobiliaria {
     private List<DocumentoLegal> documentosLegales = new ArrayList<>();
     private List<Servicio> servicios = new ArrayList<>();
     private Expediente expediente;
+    //para otros agregaodos
+    private Long usuarioId;
+    private UsuarioDetails usuarioDetails;
+
+    public void asignarUsuario(Long usuarioId) { this.usuarioId = usuarioId; }
+    public void quitarUsuario() { this.usuarioId = null; }
 
     public PropiedadInmobiliaria(){
 
     }
+
+    public Long getUsuarioId() {
+        return usuarioId;
+    }
+
+    public void setUsuarioId(Long usuarioId) {
+        this.usuarioId = usuarioId;
+    }
+
+    public UsuarioDetails getUsuarioDetails() {
+        return usuarioDetails;
+    }
+
+    public void setUsuarioDetails(UsuarioDetails usuarioDetails) {
+        this.usuarioDetails = usuarioDetails;
+    }
+
+
 
     public PropiedadInmobiliaria(Long idPropiedad, TipoPropiedad tipoPropiedad, EstadoPropiedad estado, Precio precio, Ubicacion ubicacion, Zonificacion zonificacion, List<DocumentoLegal> documentosLegales, List<Servicio> servicios, Expediente expediente) {
         this.idPropiedad = idPropiedad;
