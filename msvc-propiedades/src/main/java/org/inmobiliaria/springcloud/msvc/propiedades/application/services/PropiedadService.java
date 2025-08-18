@@ -1,26 +1,30 @@
 package org.inmobiliaria.springcloud.msvc.propiedades.application.services;
 
 import org.inmobiliaria.springcloud.msvc.propiedades.domain.models.domainentities.PropiedadInmobiliaria;
-import org.inmobiliaria.springcloud.msvc.propiedades.domain.ports.in.CreatePropiedadUseCase;
-import org.inmobiliaria.springcloud.msvc.propiedades.domain.ports.in.DeletePropiedadUseCase;
-import org.inmobiliaria.springcloud.msvc.propiedades.domain.ports.in.GetPropiedadUseCase;
-import org.inmobiliaria.springcloud.msvc.propiedades.domain.ports.in.UpdatePropiedadUseCase;
+import org.inmobiliaria.springcloud.msvc.propiedades.domain.models.domainentities.UsuarioDetails;
+import org.inmobiliaria.springcloud.msvc.propiedades.domain.ports.in.*;
 
 import java.util.List;
 import java.util.Optional;
 
-public class PropiedadService implements CreatePropiedadUseCase, DeletePropiedadUseCase, GetPropiedadUseCase, UpdatePropiedadUseCase {
+public class PropiedadService implements CreatePropiedadUseCase, DeletePropiedadUseCase, GetPropiedadUseCase, UpdatePropiedadUseCase , GetUsuarioDetailsUseCase ,AsignarUsuarioUseCase, EliminarUsuarioUseCase{
 
     private final CreatePropiedadUseCase createPropiedadUseCase;
     private final DeletePropiedadUseCase deletePropiedadUseCase;
     private final GetPropiedadUseCase getPropiedadUseCase;
     private final UpdatePropiedadUseCase updatePropiedadUseCase;
+    private final GetUsuarioDetailsUseCase getUsuarioDetailsUseCase;
+    private final AsignarUsuarioUseCase asignarUsuarioUseCase;
+    private final EliminarUsuarioUseCase eliminarUsuarioUseCase;
 
-    public PropiedadService(CreatePropiedadUseCase createPropiedadUseCase, DeletePropiedadUseCase deletePropiedadUseCase, GetPropiedadUseCase getPropiedadUseCase, UpdatePropiedadUseCase updatePropiedadUseCase) {
+    public PropiedadService(CreatePropiedadUseCase createPropiedadUseCase, DeletePropiedadUseCase deletePropiedadUseCase, GetPropiedadUseCase getPropiedadUseCase, UpdatePropiedadUseCase updatePropiedadUseCase, GetUsuarioDetailsUseCase getUsuarioDetailsUseCase, AsignarUsuarioUseCase asignarUsuarioUseCase, EliminarUsuarioUseCase eliminarUsuarioUseCase) {
         this.createPropiedadUseCase = createPropiedadUseCase;
         this.deletePropiedadUseCase = deletePropiedadUseCase;
         this.getPropiedadUseCase = getPropiedadUseCase;
         this.updatePropiedadUseCase = updatePropiedadUseCase;
+        this.getUsuarioDetailsUseCase = getUsuarioDetailsUseCase;
+        this.asignarUsuarioUseCase = asignarUsuarioUseCase;
+        this.eliminarUsuarioUseCase = eliminarUsuarioUseCase;
     }
 
     @Override
@@ -46,5 +50,22 @@ public class PropiedadService implements CreatePropiedadUseCase, DeletePropiedad
     @Override
     public Optional<PropiedadInmobiliaria> updatePropiedad(Long id, PropiedadInmobiliaria propiedadInmobiliaria) {
         return updatePropiedadUseCase.updatePropiedad(id, propiedadInmobiliaria);
+    }
+
+
+    @Override
+    public Optional<UsuarioDetails> getUsuarioDetails(Long id) {
+        return getUsuarioDetailsUseCase.getUsuarioDetails(id);
+    }
+
+    @Override
+    public void asignarUsuario(Long propiedadId, Long usuarioId) {
+        asignarUsuarioUseCase.asignarUsuario(propiedadId,usuarioId);
+    }
+
+    @Override
+    public void eliminarUsuario(Long propiedadId) {
+        eliminarUsuarioUseCase.eliminarUsuario(propiedadId);
+
     }
 }

@@ -23,7 +23,7 @@ public class PropiedadInmobiliariaEntity {
     @Column(name = "tipo_propiedad", nullable = false)
     private TipoPropiedad tipoPropiedad;
 
-
+    @Enumerated(EnumType.STRING)
     @Column(name = "estado", nullable = false)
     private EstadoPropiedad estado;
 
@@ -48,6 +48,19 @@ public class PropiedadInmobiliariaEntity {
     @JoinColumn(name = "id_expediente")
     @JsonManagedReference
     private ExpedienteEntity expediente;
+    @Column(name = "usuario_id", unique = true)   // 1-1 opcional
+    private Long usuarioId;
+
+    @Transient
+    private String usuarioNombre;
+
+    public String getUsuarioNombre() {
+        return usuarioNombre;
+    }
+
+    public void setUsuarioNombre(String usuarioNombre) {
+        this.usuarioNombre = usuarioNombre;
+    }
 
     public PropiedadInmobiliariaEntity(Long idPropiedad, TipoPropiedad tipoPropiedad, EstadoPropiedad estado, PrecioInfr precio, UbicacionInfr ubicacion, ZonificacionInfr zonificacion, List<DocumentoLegalEntity> documentosLegales, List<ServicioEntity> servicios, ExpedienteEntity expediente) {
         this.idPropiedad = idPropiedad;
@@ -65,6 +78,13 @@ public class PropiedadInmobiliariaEntity {
     }
 
 
+    public Long getUsuarioId() {
+        return usuarioId;
+    }
+
+    public void setUsuarioId(Long usuarioId) {
+        this.usuarioId = usuarioId;
+    }
 
     public Long getIdPropiedad() {
         return idPropiedad;

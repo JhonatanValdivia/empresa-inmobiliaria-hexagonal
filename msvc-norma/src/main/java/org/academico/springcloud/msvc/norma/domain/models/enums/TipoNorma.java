@@ -1,4 +1,4 @@
-package org.academico.springcloud.msvc.norma.models.enums;
+package org.academico.springcloud.msvc.norma.domain.models.enums;
 
 public enum TipoNorma {
     SEGURIDAD("Seguridad"),

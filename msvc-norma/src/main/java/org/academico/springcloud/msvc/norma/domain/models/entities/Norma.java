@@ -1,29 +1,18 @@
-package org.academico.springcloud.msvc.norma.models.entity;
+package org.academico.springcloud.msvc.norma.domain.models.entities;
 
 import jakarta.persistence.*;
-import org.academico.springcloud.msvc.norma.models.enums.TipoNorma;
-import org.academico.springcloud.msvc.norma.models.valueobjects.Fecha;
+import org.academico.springcloud.msvc.norma.domain.models.enums.TipoNorma;
+import org.academico.springcloud.msvc.norma.domain.models.valueobjects.Fecha;
 
-@Entity
-@Table(name = "normas")
+
 public class Norma {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     private Long idNorma;
-
-    @Embedded
     private Fecha fecha;
-
-    @Enumerated(EnumType.STRING)
     private TipoNorma tipo;
-
     private String estadoNorma;
-
-    @Column(columnDefinition = "TEXT")
     private String descripcion;
-
     public Norma() {}
-
     public Norma(Fecha fecha, TipoNorma tipo, String estadoNorma, String descripcion) {
         this.fecha = fecha;
         this.tipo = tipo;

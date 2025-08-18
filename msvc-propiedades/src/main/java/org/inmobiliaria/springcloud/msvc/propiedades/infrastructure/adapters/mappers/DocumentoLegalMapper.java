@@ -37,6 +37,7 @@ public class DocumentoLegalMapper {
         d.setNombreNotaria(e.getNombreNotaria());
         d.setNumeroInscripcionSunarp(e.getNumeroInscripcionSunarp());
 
+
         // Normalmente no seteamos la propiedad para evitar ciclos;
 
         return d;
