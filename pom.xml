@@ -26,6 +26,7 @@
         <module>msvc-propiedades</module>
         <module>msvc-usuarios</module>
         <module>msvc-venta</module>
+
     </modules>
 
     <properties>
