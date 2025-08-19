@@ -45,16 +45,9 @@ public class ApplicationConfig {
     @Bean
     public AsignarUsuarioUseCase asignarUsuarioUseCase(PropiedadRepositoryPort repo,
                                                        ExternalServicePort externalPort) {
-        return (propiedadId, usuarioId) -> {
-            var prop = repo.findById(propiedadId)
-                    .orElseThrow(() -> new IllegalArgumentException("Propiedad no existe"));
-            // validación mínima: que el usuario remoto exista
-            externalPort.getUsuarioDetails(usuarioId)
-                    .orElseThrow(() -> new IllegalArgumentException("Usuario no existe"));
-            prop.asignarUsuario(usuarioId);
-            repo.save(prop);
-        };
+        return new AsignarUsuarioUseCaseImpl(repo, externalPort);
     }
+
     @Bean
     public EliminarUsuarioUseCase eliminarUsuarioUseCase(PropiedadRepositoryPort repo) {
         return propiedadId -> {

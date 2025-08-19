@@ -6,8 +6,6 @@ import java.util.Optional;
 
 public interface ExternalServicePort {
     Optional<UsuarioDetails> getUsuarioDetails(Long usuarioId);
-   // void vincularPropiedadAUsuario(Long usuarioId, Long propiedadId);  // comando remoto
-    //void desvincularPropiedadDeUsuario(Long usuarioId, Long propiedadId);
 
 
 }

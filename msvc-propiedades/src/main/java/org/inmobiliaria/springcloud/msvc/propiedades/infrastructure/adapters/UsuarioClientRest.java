@@ -13,6 +13,5 @@ public interface UsuarioClientRest {
     @GetMapping("/api/usuarios/{id}")
     Usuario detalle(@PathVariable Long id);
 
-    @PostMapping("/api/usuarios")
-    Usuario crear(@RequestBody Usuario usuario);
+
 }

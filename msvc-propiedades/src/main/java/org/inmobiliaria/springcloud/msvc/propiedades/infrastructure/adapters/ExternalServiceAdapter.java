@@ -1,6 +1,7 @@
 package org.inmobiliaria.springcloud.msvc.propiedades.infrastructure.adapters;
 
 import org.inmobiliaria.springcloud.msvc.propiedades.domain.models.domainentities.UsuarioDetails;
+import org.inmobiliaria.springcloud.msvc.propiedades.domain.models.enums.TipoUsuario;
 import org.inmobiliaria.springcloud.msvc.propiedades.domain.ports.out.ExternalServicePort;
 import org.inmobiliaria.springcloud.msvc.propiedades.infrastructure.adapters.pojos.NombreCompleto;
 import org.inmobiliaria.springcloud.msvc.propiedades.infrastructure.adapters.pojos.Usuario;
@@ -17,10 +18,10 @@ public class ExternalServiceAdapter implements ExternalServicePort {
     }
 
     @Override
-    public Optional<UsuarioDetails> getUsuarioDetails(Long propiedadId) {
+    public Optional<UsuarioDetails> getUsuarioDetails(Long usuarioId) {
         try {
 
-            Usuario usuario = usuarioClientRest.detalle(propiedadId);
+            Usuario usuario = usuarioClientRest.detalle(usuarioId);
             if (usuario == null) {
                 return Optional.empty();
             }
@@ -31,8 +32,9 @@ public class ExternalServiceAdapter implements ExternalServicePort {
             } else {
                 nombre = null;
             }
+            TipoUsuario tipo = usuario.getTipoUsuario();
 
-            UsuarioDetails details = new UsuarioDetails(usuario.getId(), nombre);
+            UsuarioDetails details = new UsuarioDetails(usuario.getId(), nombre, tipo);
             return Optional.of(details);
 
         } catch (Exception ex) {
