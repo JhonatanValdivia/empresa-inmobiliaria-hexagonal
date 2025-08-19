@@ -4,26 +4,22 @@ import org.academico.springcloud.msvc.preventa.application.services.ContratoServ
 import org.academico.springcloud.msvc.preventa.application.services.PreventaService;
 import org.academico.springcloud.msvc.preventa.application.services.PropuestaService;
 import org.academico.springcloud.msvc.preventa.application.services.VisitaService;
-
 import org.academico.springcloud.msvc.preventa.application.usescases.contrato.*;
 import org.academico.springcloud.msvc.preventa.application.usescases.preventa.*;
 import org.academico.springcloud.msvc.preventa.application.usescases.propuesta.*;
 import org.academico.springcloud.msvc.preventa.application.usescases.visita.*;
-
 import org.academico.springcloud.msvc.preventa.domain.ports.in.contrato.*;
 import org.academico.springcloud.msvc.preventa.domain.ports.in.preventa.*;
 import org.academico.springcloud.msvc.preventa.domain.ports.in.propuesta.*;
 import org.academico.springcloud.msvc.preventa.domain.ports.in.visita.*;
-import org.academico.springcloud.msvc.preventa.domain.ports.out.ExternalServicePort;
 import org.academico.springcloud.msvc.preventa.domain.ports.out.PreventaRepositorioPort;
-
+import org.academico.springcloud.msvc.preventa.domain.ports.out.PropiedadPort;
 import org.academico.springcloud.msvc.preventa.domain.ports.out.UsuarioPort;
+import org.academico.springcloud.msvc.preventa.infrastructure.adapters.ExternalPropiedadesAdapter;
 import org.academico.springcloud.msvc.preventa.infrastructure.adapters.ExternalUsuarioAdapter;
 import org.academico.springcloud.msvc.preventa.infrastructure.adapters.PreventaRepositorioAdapter;
-
-
+import org.academico.springcloud.msvc.preventa.infrastructure.clients.PropiedadClientRest;
 import org.academico.springcloud.msvc.preventa.infrastructure.repositories.JpaPreventaRepositorio;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -31,13 +27,15 @@ import org.springframework.context.annotation.Configuration;
 public class ApplicationConfig {
 
     @Bean
-    public PreventaService preventaServicio(PreventaRepositorioPort preventaRepositorioPort, UsuarioPort usuarioPort) {
+    public PreventaService preventaServicio(PreventaRepositorioPort preventaRepositorioPort,
+                                            UsuarioPort usuarioPort,
+                                            PropiedadPort propiedadPort) {
       return new PreventaService(
               new ActualizarPreventaCasoUsoImpl(preventaRepositorioPort),
               new AprobarPreventaCasoUsoImpl(preventaRepositorioPort),
               new CrearPreventaCasoUsoImpl(preventaRepositorioPort),
               new EliminarPreventaCasoUsoImpl(preventaRepositorioPort),
-              new RecuperarPreventaCasoUsoImpl(preventaRepositorioPort),
+              new RecuperarPreventaCasoUsoImpl(preventaRepositorioPort, propiedadPort, usuarioPort),
               new AsociarUsuarioPreventaImpl(preventaRepositorioPort, usuarioPort)
         );
     }
@@ -117,8 +115,11 @@ public class ApplicationConfig {
     }
 
     @Bean
-    public RecuperarPreventaCasoUso recuperarPreventaCasoUso(PreventaRepositorioPort preventaRepositorioPort) {
-        return new RecuperarPreventaCasoUsoImpl(preventaRepositorioPort);
+    public RecuperarPreventaCasoUso recuperarPreventaCasoUso(
+            PreventaRepositorioPort preventaRepositorioPort,
+            PropiedadPort propiedadPort,
+            UsuarioPort usuarioPort) {
+        return new RecuperarPreventaCasoUsoImpl(preventaRepositorioPort, propiedadPort, usuarioPort);
     }
 
     // Implementaciones de Casos de Uso (Contrato)
@@ -206,5 +207,9 @@ public class ApplicationConfig {
         return new PreventaRepositorioAdapter(jpaPreventaRepositorio);
     }
 
-
+    // --- ADAPTADOR DE PROPIEDADES ---
+    @Bean
+    public PropiedadPort propiedadPort(PropiedadClientRest propiedadClientRest) {
+        return new ExternalPropiedadesAdapter(propiedadClientRest);
+    }
 }

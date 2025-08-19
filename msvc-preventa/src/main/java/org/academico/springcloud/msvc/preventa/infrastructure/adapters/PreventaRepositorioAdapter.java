@@ -1,12 +1,16 @@
 package org.academico.springcloud.msvc.preventa.infrastructure.adapters;
 
+import jakarta.persistence.Transient;
 import org.academico.springcloud.msvc.preventa.domain.models.domainentities.Preventa;
+import org.academico.springcloud.msvc.preventa.domain.models.enums.EstadoPreventa;
 import org.academico.springcloud.msvc.preventa.domain.ports.out.PreventaRepositorioPort;
 import org.academico.springcloud.msvc.preventa.infrastructure.adapters.mappers.PreventaMapper; // <--- Sigue siendo necesario para llamar a sus métodos estáticos
 import org.academico.springcloud.msvc.preventa.infrastructure.entities.PreventaEntidad;
 import org.academico.springcloud.msvc.preventa.infrastructure.repositories.JpaPreventaRepositorio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -65,5 +69,25 @@ public class PreventaRepositorioAdapter implements PreventaRepositorioPort {
     @Override
     public boolean existsById(Long id) {
         return jpaPreventaRepositorio.existsById(id);
+    }
+
+    @Override
+    public List<Preventa> buscarPorIdPropiedadYEstado(Long idPropiedad, EstadoPreventa estado) {
+        return jpaPreventaRepositorio.findByIdPropiedadAndEstado(idPropiedad, estado).stream()
+                .map(PreventaMapper::toDomain)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public boolean existePorUsuarioClienteIdYEstado(Long usuarioClienteId, EstadoPreventa estado) {
+        return jpaPreventaRepositorio.existsByUsuarioClienteIdAndEstado(usuarioClienteId, estado);
+    }
+
+    @Override
+    @Transactional
+    public void eliminarPorIds(List<Long> ids) {
+        if (ids != null && !ids.isEmpty()) {
+            jpaPreventaRepositorio.eliminarPorIds(ids);
+        }
     }
 }

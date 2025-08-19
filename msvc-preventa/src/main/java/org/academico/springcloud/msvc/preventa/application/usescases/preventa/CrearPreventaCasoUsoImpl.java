@@ -18,7 +18,15 @@ public class CrearPreventaCasoUsoImpl implements CrearPreventaCasoUso {
     @Override
     @Transactional
     public Preventa crearPreventa(Preventa preventa) {
-        // El constructor de Preventa ya maneja las validaciones iniciales de campos obligatorios.
+        if (preventa.getFechaInicio() == null) {
+            throw new IllegalArgumentException("La fecha de inicio es un campo obligatorio para crear una preventa.");
+        }
+        if (preventa.getUsuarioAgenteId() == null || preventa.getUsuarioClienteId() == null) {
+            throw new IllegalArgumentException("El agente y el cliente deben estar asignados para crear una preventa.");
+        }
+        if (preventa.getIdPropiedad() == null) {
+            throw new IllegalArgumentException("Se debe asignar una propiedad para crear una preventa.");
+        }
         return preventaRepositorioPort.guardar(preventa);
     }
 }

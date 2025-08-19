@@ -88,8 +88,4 @@ public class PropiedadController {
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
-
-
-
-
 }

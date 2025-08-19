@@ -1,6 +1,10 @@
 package org.academico.springcloud.msvc.preventa.domain.models.domainentities;
 
+import jakarta.persistence.Transient;
+import org.academico.springcloud.msvc.preventa.domain.models.PropiedadInmobiliaria;
+import org.academico.springcloud.msvc.preventa.domain.models.Usuario;
 import org.academico.springcloud.msvc.preventa.domain.models.enums.EstadoPreventa;
+import org.academico.springcloud.msvc.preventa.infrastructure.entities.PropiedadInmobiliariaPojo;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -11,37 +15,46 @@ import java.util.Optional;
 public class Preventa {
     private Long id;
     private LocalDate fechaInicio;
-    private EstadoPreventa estado; // "EN_EVALUACION", "APROBADA", "CANCELADA", "FINALIZADA"
-
+    private EstadoPreventa estado;
     private ContratoVenta contratoVenta;
     private List<PropuestaPago> propuestasPago;
     private List<VisitaProgramada> visitasProgramadas;
-
     private Long usuarioAgenteId;
-
     private Long usuarioClienteId;
+    private Long idPropiedad;
+
+    @Transient
+    private PropiedadInmobiliaria propiedad;
+
+    @Transient
+    private Usuario agente;
+
+    @Transient
+    private Usuario cliente;
 
     public Preventa() {
-        this.estado = EstadoPreventa.EN_EVALUACION; // Estado inicial
-        this.fechaInicio = LocalDate.now();
+        this.estado = EstadoPreventa.EN_EVALUACION;
+        this.fechaInicio = null;
         this.contratoVenta = null;
         this.propuestasPago = new ArrayList<>();
         this.visitasProgramadas = new ArrayList<>();
+        this.usuarioAgenteId = null;
+        this.usuarioClienteId = null;
+        this.idPropiedad = null;
     }
 
-    public Preventa(Long id, LocalDate fechaInicio, EstadoPreventa estado, ContratoVenta contratoVenta, List<PropuestaPago> propuestasPago, List<VisitaProgramada> visitasProgramadas) {
-        if (fechaInicio == null) {
-            throw new IllegalArgumentException("La fecha de inicio de la preventa es obligatoria.");
-        }
+    // Constructor compatible con el mapeo actual del PreventaMapper (6 parámetros)
+    // Constructor compatible con el mapeo actual del PreventaMapper
+    public Preventa(Long id, LocalDate fechaInicio, EstadoPreventa estado, ContratoVenta contratoVenta,
+                    List<PropuestaPago> propuestasPago, List<VisitaProgramada> visitasProgramadas) {
         this.id = id;
         this.fechaInicio = fechaInicio;
-        this.estado = (estado != null) ? estado : EstadoPreventa.EN_EVALUACION;
+        this.estado = estado;
         this.contratoVenta = contratoVenta;
-        this.propuestasPago = (propuestasPago != null) ? new ArrayList<>(propuestasPago) : new ArrayList<>();
-        this.visitasProgramadas = (visitasProgramadas != null) ? new ArrayList<>(visitasProgramadas) : new ArrayList<>();
+        this.propuestasPago = (propuestasPago != null) ? propuestasPago : new ArrayList<>();
+        this.visitasProgramadas = (visitasProgramadas != null) ? visitasProgramadas : new ArrayList<>();
     }
 
-    // Métodos de Lógica de Negocio (del agregado)
     public void aprobarPreventa() {
         if (this.estado != EstadoPreventa.EN_EVALUACION) {
             throw new IllegalStateException("La preventa solo puede ser aprobada si está EN_EVALUACION. Estado actual: " + this.estado);
@@ -58,8 +71,6 @@ public class Preventa {
             throw new IllegalArgumentException("La propuesta de pago con ID " + propuesta.getId() + " ya existe en esta preventa.");
         }
         this.propuestasPago.add(propuesta);
-        // Ojo: Si la PropuestaPago tiene una referencia a Preventa, debe ser bidireccional en el dominio también.
-        // Pero en este caso, se gestiona el agregado.
     }
 
     public Optional<PropuestaPago> findPropuestaPagoById(Long propuestaId) {
@@ -84,31 +95,39 @@ public class Preventa {
                 .findFirst();
     }
 
-    // Getters y Setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
     public LocalDate getFechaInicio() { return fechaInicio; }
-    public void setFechaInicio(LocalDate fechaInicio) { this.fechaInicio = fechaInicio; }
+    public void setFechaInicio(LocalDate fechaInicio) {
+        if (fechaInicio == null) {
+            throw new IllegalArgumentException("La fecha de inicio es obligatoria.");
+        }
+        if (fechaInicio.isBefore(LocalDate.now())) {
+            throw new IllegalArgumentException("La fecha de inicio no puede ser una fecha pasada.");
+        }
+        this.fechaInicio = fechaInicio;
+    }
+
     public EstadoPreventa getEstado() { return estado; }
     public void setEstado(EstadoPreventa estado) { this.estado = estado; }
     public ContratoVenta getContratoVenta() { return contratoVenta; }
     public void setContratoVenta(ContratoVenta contratoVenta) { this.contratoVenta = contratoVenta; }
-    public List<PropuestaPago> getPropuestasPago() { return new ArrayList<>(propuestasPago); } // Devolver copia
+    public List<PropuestaPago> getPropuestasPago() { return new ArrayList<>(propuestasPago); }
     public void setPropuestasPago(List<PropuestaPago> propuestasPago) { this.propuestasPago = (propuestasPago != null) ? new ArrayList<>(propuestasPago) : new ArrayList<>(); }
-    public List<VisitaProgramada> getVisitasProgramadas() { return new ArrayList<>(visitasProgramadas); } // Devolver copia
+    public List<VisitaProgramada> getVisitasProgramadas() { return new ArrayList<>(visitasProgramadas); }
     public void setVisitasProgramadas(List<VisitaProgramada> visitasProgramadas) { this.visitasProgramadas = (visitasProgramadas != null) ? new ArrayList<>(visitasProgramadas) : new ArrayList<>(); }
-    public Long getUsuarioAgenteId() {
-        return usuarioAgenteId;
-    }
-    public void setUsuarioAgenteId(Long usuarioAgenteId) {
-        this.usuarioAgenteId = usuarioAgenteId;
-    }
-    public Long getUsuarioClienteId() {
-        return usuarioClienteId;
-    }
-    public void setUsuarioClienteId(Long usuarioClienteId) {
-        this.usuarioClienteId = usuarioClienteId;
-    }
+    public Long getUsuarioAgenteId() { return usuarioAgenteId; }
+    public void setUsuarioAgenteId(Long usuarioAgenteId) { this.usuarioAgenteId = usuarioAgenteId; }
+    public Long getUsuarioClienteId() { return usuarioClienteId; }
+    public void setUsuarioClienteId(Long usuarioClienteId) { this.usuarioClienteId = usuarioClienteId; }
+    public Long getIdPropiedad() { return idPropiedad; }
+    public void setIdPropiedad(Long idPropiedad) { this.idPropiedad = idPropiedad; }
+    public PropiedadInmobiliaria getPropiedad() {return propiedad;}
+    public void setPropiedad(PropiedadInmobiliaria propiedad) {this.propiedad = propiedad;}
+    public Usuario getAgente() {return agente;}
+    public void setAgente(Usuario agente) {this.agente = agente;}
+    public Usuario getCliente() {return cliente;}
+    public void setCliente(Usuario cliente) {this.cliente = cliente;}
 
     @Override
     public boolean equals(Object o) {
@@ -123,9 +142,8 @@ public class Preventa {
         return Objects.hash(id);
     }
 
-    // Método de dominio para asociar usuarios
     public void asociarUsuarios(Long idAgente, Long idCliente) {
-        if(idAgente == null || idCliente == null) {
+        if (idAgente == null || idCliente == null) {
             throw new IllegalArgumentException("Los IDs no pueden ser nulos");
         }
         this.usuarioAgenteId = idAgente;
