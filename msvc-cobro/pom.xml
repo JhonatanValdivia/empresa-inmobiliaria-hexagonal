@@ -8,11 +8,12 @@
 		<version>1.0-SNAPSHOT</version>
 	</parent>
 
+
 	<groupId>org.academico.springcloud.msvc.cobro</groupId>
 	<artifactId>msvc-cobro</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>msvc-cobro</name>
-	<description>Agregado cobro para el contexto gestión de cobro.</description>
+	<description>Gestion de cobros</description>
 	<url/>
 	<licenses>
 		<license/>

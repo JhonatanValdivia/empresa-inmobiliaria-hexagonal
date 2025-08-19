@@ -1,13 +1,20 @@
 package org.academico.springcloud.msvc.preventa.infrastructure.adapters;
 
+import feign.FeignException;
 import org.academico.springcloud.msvc.preventa.domain.models.Usuario;
 import org.academico.springcloud.msvc.preventa.domain.ports.out.UsuarioPort;
 import org.academico.springcloud.msvc.preventa.infrastructure.clients.UsuarioClientRest;
 import org.academico.springcloud.msvc.preventa.infrastructure.entities.UsuarioPojo;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
+
+import java.util.Optional;
 
 @Component
 public class ExternalUsuarioAdapter implements UsuarioPort {
+
+    private static final Logger log = LoggerFactory.getLogger(ExternalUsuarioAdapter.class);
     private final UsuarioClientRest usuarioClientRest;
 
     public ExternalUsuarioAdapter(UsuarioClientRest usuarioClientRest) {
@@ -34,14 +41,16 @@ public class ExternalUsuarioAdapter implements UsuarioPort {
     }
 
     @Override
-    public Usuario obtenerUsuario(Long idUsuario) {
-        UsuarioPojo pojo = usuarioClientRest.detalleUsuario(idUsuario);
-
-        if (pojo == null) {
-            throw new IllegalArgumentException("Usuario no encontrado con id: " + idUsuario);
+    public Optional<Usuario> obtenerUsuario(Long idUsuario) {
+        try {
+            UsuarioPojo pojo = usuarioClientRest.detalleUsuario(idUsuario);
+            return Optional.ofNullable(mapToDomain(pojo));
+        } catch (FeignException.NotFound e) {
+            log.info("No se encontró el usuario con id: {}. El servicio externo devolvió 404.", idUsuario);
+            return Optional.empty();
+        } catch (Exception e) {
+            log.error("Error inesperado al intentar obtener el usuario con id: {}. Causa: {}", idUsuario, e.getMessage(), e);
+            return Optional.empty();
         }
-
-        // Mapear de UsuarioPojo a Usuario (dominio)
-        return mapToDomain(pojo);
     }
 }

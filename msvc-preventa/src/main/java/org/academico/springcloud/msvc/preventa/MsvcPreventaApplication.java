@@ -9,9 +9,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 @EntityScan("org.academico.springcloud.msvc.preventa.infrastructure.entities")
 @EnableFeignClients(basePackages = "org.academico.springcloud.msvc.preventa.infrastructure.clients")
 public class MsvcPreventaApplication {
-
 	public static void main(String[] args) {
 		SpringApplication.run(MsvcPreventaApplication.class, args);
 	}
-
 }

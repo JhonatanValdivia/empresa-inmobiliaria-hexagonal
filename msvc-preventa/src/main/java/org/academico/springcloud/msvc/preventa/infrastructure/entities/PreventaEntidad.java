@@ -34,11 +34,14 @@ public class PreventaEntidad {
     private List<VisitaProgramadaEntidad> visitasProgramadas = new ArrayList<>();
 
     //relación con Usuario(agente y cliente)
-    @Column(name="agente_id",unique = true)
+    @Column(name="agente_id")
     private Long usuarioAgenteId;
 
-    @Column(name = "cliente_id",unique=true)
+    @Column(name = "cliente_id")
     private Long usuarioClienteId;
+
+    @Column(name = "propiedad_id")
+    private Long idPropiedad;
 
     public PreventaEntidad() {}
 
@@ -64,19 +67,14 @@ public class PreventaEntidad {
     public void setPropuestasPago(List<PropuestaPagoEntidad> propuestasPago) { this.propuestasPago = propuestasPago; }
     public List<VisitaProgramadaEntidad> getVisitasProgramadas() { return visitasProgramadas; }
     public void setVisitasProgramadas(List<VisitaProgramadaEntidad> visitasProgramadas) { this.visitasProgramadas = visitasProgramadas; }
-
-    public Long getUsuarioAgenteId() {
-        return usuarioAgenteId;
-    }
+    public Long getUsuarioAgenteId() {return usuarioAgenteId;}
     public void setUsuarioAgenteId(Long usuarioAgenteId) {
         this.usuarioAgenteId = usuarioAgenteId;
     }
-    public Long getUsuarioClienteId() {
-        return usuarioClienteId;
-    }
-    public void setUsuarioClienteId(Long usuarioClienteId) {
-        this.usuarioClienteId = usuarioClienteId;
-    }
+    public Long getUsuarioClienteId() {return usuarioClienteId;}
+    public void setUsuarioClienteId(Long usuarioClienteId) {this.usuarioClienteId = usuarioClienteId;}
+    public Long getIdPropiedad() {return idPropiedad;}
+    public void setIdPropiedad(Long idPropiedad) {this.idPropiedad = idPropiedad;   }
 
     @Override
     public boolean equals(Object o) {

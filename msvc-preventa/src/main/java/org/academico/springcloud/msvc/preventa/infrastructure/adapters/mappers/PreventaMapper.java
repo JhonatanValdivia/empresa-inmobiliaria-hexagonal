@@ -1,23 +1,16 @@
 package org.academico.springcloud.msvc.preventa.infrastructure.adapters.mappers;
 
+import org.academico.springcloud.msvc.preventa.domain.models.PropiedadInmobiliaria;
 import org.academico.springcloud.msvc.preventa.domain.models.domainentities.ContratoVenta;
 import org.academico.springcloud.msvc.preventa.domain.models.domainentities.Preventa;
-import org.academico.springcloud.msvc.preventa.infrastructure.entities.ContratoVentaEntidad;
-import org.academico.springcloud.msvc.preventa.infrastructure.entities.PreventaEntidad;
-import org.academico.springcloud.msvc.preventa.infrastructure.entities.PropuestaPagoEntidad;
-import org.academico.springcloud.msvc.preventa.infrastructure.entities.VisitaProgramadaEntidad;
+import org.academico.springcloud.msvc.preventa.infrastructure.entities.*;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-// Este mapper es central y maneja las relaciones anidadas
 public class PreventaMapper {
-
     public PreventaMapper() {}
-
-    // ------------------ ENTITY <-> DOMAIN ------------------
-
     public static PreventaEntidad toEntity(Preventa domain) {
         if (domain == null) return null;
 
@@ -25,10 +18,9 @@ public class PreventaMapper {
         entity.setId(domain.getId());
         entity.setFechaInicio(domain.getFechaInicio());
         entity.setEstado(domain.getEstado());
-
-        // Asignar IDs de usuario
         entity.setUsuarioAgenteId(domain.getUsuarioAgenteId());
         entity.setUsuarioClienteId(domain.getUsuarioClienteId());
+        entity.setIdPropiedad(domain.getIdPropiedad());
 
         // Mapeo de ContratoVenta
         if (domain.getContratoVenta() != null) {
@@ -109,10 +101,35 @@ public class PreventaMapper {
                 domainVisitas
         );
 
-        // Asignar IDs de usuario
         domain.setUsuarioAgenteId(entity.getUsuarioAgenteId());
         domain.setUsuarioClienteId(entity.getUsuarioClienteId());
+        domain.setIdPropiedad(entity.getIdPropiedad());
 
         return domain;
+    }
+
+    // ---  MAPEAR PROPIEDADES ---
+    public static PropiedadInmobiliaria toDomain(PropiedadInmobiliariaPojo pojo) {
+        if (pojo == null) {
+            return null;
+        }
+
+        // Mapeo de Enums. Se usa .name() para convertir de un enum a otro por su nombre de cadena.
+        PropiedadInmobiliaria.TipoPropiedad tipoPropiedad = PropiedadInmobiliaria.TipoPropiedad.valueOf(pojo.getTipoPropiedad().name());
+        PropiedadInmobiliaria.EstadoPropiedad estadoPropiedad = PropiedadInmobiliaria.EstadoPropiedad.valueOf(pojo.getEstado().name());
+
+        return new PropiedadInmobiliaria(
+                pojo.getIdPropiedad(),
+                tipoPropiedad,
+                estadoPropiedad,
+                pojo.getPrecio().getMonto(),
+                pojo.getPrecio().getMoneda(),
+                pojo.getUbicacion().getUbigeo(),
+                pojo.getUbicacion().getCiudad(),
+                pojo.getUbicacion().getDireccion(),
+                pojo.getZonificacion().getTipoZona(),
+                pojo.getZonificacion().getDescripcionNormativa(),
+                pojo.getZonificacion().getUsoPermitido()
+        );
     }
 }

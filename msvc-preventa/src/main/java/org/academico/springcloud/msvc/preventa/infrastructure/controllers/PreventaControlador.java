@@ -48,21 +48,19 @@ public class PreventaControlador {
     }
 
     // --- Endpoints de Preventa ---
-
     @PostMapping
-    public ResponseEntity<?> crearPreventa(@RequestBody Preventa preventa) {
+    public ResponseEntity<?> crearPreventa(@RequestBody Preventa preventa) { // <-- Se queda simple
         try {
             Preventa crearPreventa = preventaService.crearPreventa(preventa);
             URI location = UriComponentsBuilder.fromPath("/api/preventas/{id}")
                     .buildAndExpand(crearPreventa.getId())
                     .toUri();
             return ResponseEntity.created(location).body(crearPreventa);
+
         } catch (IllegalArgumentException e) {
-            // Error de validación de dominio
-            return ResponseEntity.badRequest().build(); // Sin cuerpo
+            return ResponseEntity.badRequest().body(e.getMessage());
         } catch (Exception e) {
-            // Otros errores inesperados
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build(); // Sin cuerpo
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 
@@ -70,14 +68,14 @@ public class PreventaControlador {
     public ResponseEntity<?> porIdPreventa(@PathVariable Long id) {
         return preventaService.preventaPorId(id)
                 .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build()); // 404 Not Found, sin cuerpo
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @GetMapping
-    public ResponseEntity<List<Preventa>> getTodasPreventas() {
+    public ResponseEntity<List<Preventa>> listar() {
         List<Preventa> preventas = preventaService.obtenerTodasPreventas();
         if (preventas.isEmpty()) {
-            return ResponseEntity.noContent().build(); // 204 No Content
+            return ResponseEntity.noContent().build();
         }
         return ResponseEntity.ok(preventas);
     }
@@ -85,28 +83,24 @@ public class PreventaControlador {
     @PutMapping("/{id}")
     public ResponseEntity<?> actualizarPreventa(@PathVariable Long id, @RequestBody Preventa preventaActualizada) {
         try {
-            // Asegura que el ID del path se use para la actualización
             preventaActualizada.setId(id);
             return preventaService.actualizarPreventa(id, preventaActualizada)
                     .map(ResponseEntity::ok)
-                    .orElse(ResponseEntity.notFound().build()); // 404 Not Found, sin cuerpo
+                    .orElse(ResponseEntity.notFound().build());
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().build(); // 400 Bad Request, sin cuerpo
+            return ResponseEntity.badRequest().build();
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build(); // 500 Internal Server Error, sin cuerpo
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> eliminarPreventa(@PathVariable Long id) {
-        // Suponemos que el caso de uso se encarga de verificar existencia o lanzar excepción.
-        // Si no existe, deleteById no lanzará error por defecto en CrudRepository,
-        // pero podemos asumir que el caso de uso devuelve un booleano si se eliminó o no.
         try {
             preventaService.eliminarPreventa(id);
-            return ResponseEntity.noContent().build(); // 204 No Content
-        } catch (Exception e) { // Captura cualquier error si el servicio subyacente lanza
-            return ResponseEntity.notFound().build(); // O un 500 si es un error interno
+            return ResponseEntity.noContent().build();
+        } catch (Exception e) {
+            return ResponseEntity.notFound().build();
         }
     }
 
@@ -115,11 +109,11 @@ public class PreventaControlador {
         try {
             return preventaService.aprobarPreventa(preventaId)
                     .map(ResponseEntity::ok)
-                    .orElse(ResponseEntity.notFound().build()); // Preventa no encontrada
-        } catch (RuntimeException e) { // Captura IllegalStateException del dominio
-            return ResponseEntity.badRequest().build(); // 400 Bad Request
+                    .orElse(ResponseEntity.notFound().build());
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().build();
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build(); // 500 Internal Server Error
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 
@@ -141,8 +135,6 @@ public class PreventaControlador {
     @PutMapping("/{preventaId}/contrato")
     public ResponseEntity<?> actualizarContrato(@PathVariable Long preventaId, @RequestBody ContratoVenta contrato) {
         try {
-            // El ID del contrato se asume que está dentro del objeto contrato, o el caso de uso lo gestiona.
-            // Aquí, pasamos el objeto completo, el caso de uso debe saber qué hacer.
             return contratoService.actualizarContratoVenta(preventaId, contrato)
                     .map(ResponseEntity::ok)
                     .orElse(ResponseEntity.notFound().build()); // Preventa o contrato no encontrado
@@ -156,7 +148,6 @@ public class PreventaControlador {
     @DeleteMapping("/{preventaId}/contrato")
     public ResponseEntity<?> eliminarContrato(@PathVariable Long preventaId) {
         try {
-            // El caso de uso devuelve Optional<Preventa> para indicar si la preventa fue actualizada
             return contratoService.eliminarContratoVenta(preventaId)
                     .map(p -> ResponseEntity.noContent().build()) // Retorna 204 si se eliminó
                     .orElse(ResponseEntity.notFound().build()); // Preventa no encontrada
@@ -188,7 +179,6 @@ public class PreventaControlador {
     }
 
     // --- Endpoints de Propuesta de Pago ---
-
     @PostMapping("/{preventaId}/propuestas")
     public ResponseEntity<?> agregarPropuesta(@PathVariable Long preventaId, @RequestBody PropuestaPago propuesta) {
         try {
@@ -219,7 +209,6 @@ public class PreventaControlador {
     @PutMapping("/{preventaId}/propuestas/{propuestaId}")
     public ResponseEntity<?> editarPropuestaPago(@PathVariable Long preventaId, @PathVariable Long propuestaId, @RequestBody PropuestaPago propuesta) {
         try {
-            // El ID de la propuesta se asegura con el path variable
             propuesta.setId(propuestaId);
             return propuestaService.actualizarPropuestaPago(preventaId, propuestaId, propuesta)
                     .map(ResponseEntity::ok)
@@ -245,7 +234,6 @@ public class PreventaControlador {
     }
 
     // --- Endpoints de Visitas Programadas ---
-
     @PostMapping("/{preventaId}/visitas")
     public ResponseEntity<?> agregarVisita(@PathVariable Long preventaId, @RequestBody VisitaProgramada visita) {
         try {
@@ -305,7 +293,7 @@ public class PreventaControlador {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
-    // Endpoint para asociar usuarios a una preventa
+
     @PostMapping("/{idPreventa}/asociar-usuarios")
     public ResponseEntity<Preventa> asociarUsuarios(
             @PathVariable Long idPreventa,
