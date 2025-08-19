@@ -19,7 +19,6 @@ import org.springframework.context.annotation.Configuration;
 public class ApplicationConfig {
 
     @Bean
-
     public PropiedadService propiedadService(PropiedadRepositoryPort repo,
                                              GetUsuarioDetailsUseCase getUsuarioDetailsUC,
                                              AsignarUsuarioUseCase asignarUsuarioUC,
@@ -50,12 +49,8 @@ public class ApplicationConfig {
 
     @Bean
     public EliminarUsuarioUseCase eliminarUsuarioUseCase(PropiedadRepositoryPort repo) {
-        return propiedadId -> {
-            var prop = repo.findById(propiedadId)
-                    .orElseThrow(() -> new IllegalArgumentException("Propiedad no existe"));
-            prop.quitarUsuario();
-            repo.save(prop);
-        };
+        return new EliminarUsuarioUseCaseImpl(repo);
+
     }
 
     /*
