@@ -29,7 +29,6 @@ public class UsuarioController {
     private ContarUsuariosUseCase contarUsuariosUseCase;
     @Autowired
     private ObtenerUsuariosPorTipoUseCase obtenerUsuariosPorTipoUseCase;
-
     @GetMapping
     public ResponseEntity<List<Usuario>> listar() {
         return ResponseEntity.ok(obtenerUsuarioUseCase.obtenerTodos());

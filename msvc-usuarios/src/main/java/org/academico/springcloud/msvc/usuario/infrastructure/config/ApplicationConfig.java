@@ -51,4 +51,6 @@ public class ApplicationConfig {
     public UsuarioMapper usuarioMapper() {
         return new UsuarioMapper();
     }
+
+
 }
